@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>연락 — 세미콜론</title>
+  <meta name="description" content="매일 겪는 불편을 세미콜론에 들려주세요. 사소한 불편일수록 좋습니다." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" />
+  <link rel="stylesheet" href="styles.css?v=3" />
+
+  <style>
+    /* ===== contact 전용 ===== */
+    .page-hero { padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(1.5rem, 4vw, 2.5rem); }
+    .page-hero h1 { font-size: clamp(2.1rem, 1.1rem + 4vw, 3.6rem); font-weight: 600; line-height: 1.12; letter-spacing: -0.03em; margin-top: 1.1rem; }
+    .page-hero h1 .semi { color: var(--green); font-weight: 700; font-size: 1.12em; }
+    .page-hero .lead { margin-top: 1.3rem; max-width: 46ch; color: var(--ink-soft); font-size: clamp(1.05rem, 1rem + 0.4vw, 1.2rem); }
+
+    .contact-grid { display: grid; gap: clamp(1.75rem, 4vw, 3rem); grid-template-columns: 1fr; align-items: start; padding-bottom: clamp(3rem, 7vw, 6rem); }
+    @media (min-width: 860px) { .contact-grid { grid-template-columns: 1.3fr 0.7fr; } }
+
+    /* 폼 카드 */
+    .form-card { background: var(--paper-deep); border: 1px solid var(--line-soft); border-radius: var(--radius); padding: clamp(1.5rem, 4vw, 2.5rem); }
+    .field { margin-bottom: 1.15rem; }
+    .field:last-of-type { margin-bottom: 0; }
+    .field label { display: block; font-weight: 600; font-size: 0.93rem; margin-bottom: 0.45rem; }
+    .field .opt { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); font-weight: 500; margin-left: 0.4em; }
+    .field input, .field select, .field textarea {
+      width: 100%; font: inherit; color: var(--ink); background: var(--paper);
+      border: 1px solid var(--line); border-radius: 12px; padding: 0.8em 0.9em;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .field textarea { min-height: 150px; resize: vertical; line-height: 1.6; }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      outline: none; border-color: var(--green); box-shadow: 0 0 0 3px var(--green-tint);
+    }
+    .field .err { color: #b4452f; font-size: 0.85rem; margin-top: 0.4rem; display: none; }
+    .field.invalid .err { display: block; }
+    .field.invalid input, .field.invalid textarea { border-color: #b4452f; }
+    .form-actions { margin-top: 1.5rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+    .form-note { font-size: 0.82rem; color: var(--ink-soft); }
+
+    /* 전송 후 안내 */
+    .sent { background: var(--paper-deep); border: 1px solid var(--green-tint); border-radius: var(--radius); padding: clamp(1.75rem, 4vw, 2.75rem); }
+    .sent .semi { color: var(--green); font-weight: 700; }
+    .sent h2 { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.01em; }
+    .sent p { color: var(--ink-soft); margin-top: 0.75rem; max-width: 48ch; }
+    .sent .sent-actions { margin-top: 1.5rem; display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+    /* 사이드 */
+    .aside-card { background: var(--mist); border-radius: var(--radius); padding: clamp(1.5rem, 4vw, 2rem); }
+    .aside-card + .aside-card { margin-top: 1rem; }
+    .aside-card h3 { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--green); font-weight: 500; margin-bottom: 0.9rem; }
+    .aside-row { padding-block: 0.35rem; }
+    .aside-row .k { font-size: 0.8rem; color: var(--ink-soft); }
+    .aside-row .v { font-weight: 600; }
+    .aside-row a.v { color: var(--green); }
+    .aside-note { font-size: 0.85rem; color: var(--ink-soft); line-height: 1.6; }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAV ===== -->
+  <header class="nav" id="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="index.html" aria-label="세미콜론 홈">
+        <svg class="logo" viewBox="0 0 28 46" aria-hidden="true">
+          <rect class="sc-dot" x="8" y="2" width="13" height="13" rx="2.5" />
+          <path class="sc-comma" d="M8 21 L21 21 C20 30 17 37 13.5 44 Q12 47 10.5 44 C9 37 8.5 30 8 21 Z" />
+        </svg>
+        세미콜론<span class="brand-en">Semicolon</span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="메뉴 열기">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav-links" id="navMenu" aria-label="주요 메뉴">
+        <a class="nav-link" href="about.html">소개</a>
+        <a class="nav-link" href="index.html#services">서비스</a>
+        <a class="nav-link" href="contact.html">연락</a>
+        <a class="btn btn-primary nav-cta" href="#report">불편 제보하기</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- ===== PAGE HERO ===== -->
+    <section class="page-hero">
+      <div class="wrap">
+        <span class="eyebrow">연락 · 불편 제보</span>
+        <h1>불편한 점,<br />들려주세요<span class="semi">;</span></h1>
+        <p class="lead">사소해서 그냥 넘겼던 불편일수록 좋습니다. 한 줄이면 충분해요. 세미콜론이 그 문장을 함께 끝맺겠습니다.</p>
+      </div>
+    </section>
+
+    <!-- ===== CONTACT ===== -->
+    <section id="report">
+      <div class="wrap contact-grid">
+        <!-- 폼 -->
+        <div>
+          <form class="form-card" id="reportForm" novalidate>
+            <div class="field">
+              <label for="f-area">어떤 영역의 불편인가요? <span class="opt">선택</span></label>
+              <select id="f-area">
+                <option value="">고르지 않음</option>
+                <option>스터디 로그 (공부·집중)</option>
+                <option>고등지도 (지도·학교)</option>
+                <option>페이퍼 거래소 (투자·게임)</option>
+                <option>일상의 다른 불편</option>
+              </select>
+            </div>
+
+            <div class="field" id="field-msg">
+              <label for="f-msg">어떤 불편이었나요?</label>
+              <textarea id="f-msg" placeholder="예) 가입할 때 입력할 게 너무 많아서 중간에 그만뒀어요."></textarea>
+              <p class="err">어떤 불편이었는지 한 줄이라도 적어주세요.</p>
+            </div>
+
+            <div class="field">
+              <label for="f-email">회신받을 이메일 <span class="opt">선택</span></label>
+              <input type="email" id="f-email" placeholder="답변이 필요하면 적어주세요" autocomplete="email" />
+            </div>
+
+            <div class="field">
+              <label for="f-name">이름 또는 닉네임 <span class="opt">선택</span></label>
+              <input type="text" id="f-name" placeholder="익명도 괜찮아요" autocomplete="name" />
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">불편 보내기 <span class="arrow">→</span></button>
+              <span class="form-note">지금은 화면만 동작합니다. 실제 전송 기능은 곧 연결돼요.</span>
+            </div>
+          </form>
+
+          <!-- 전송 후(현재는 안내) -->
+          <div class="sent" id="sent" hidden tabindex="-1" aria-live="polite">
+            <h2>잘 받았습니다<span class="semi">;</span> 다만 아직 한 단계 남았어요.</h2>
+            <p>이 페이지는 화면만 준비된 단계라, 작성하신 내용은 아직 자동 전송되지 않습니다. 아래 버튼을 누르면 적으신 내용이 그대로 담긴 메일이 열려요. (자동 접수 기능은 곧 연결됩니다.)</p>
+            <div class="sent-actions">
+              <a class="btn btn-primary" id="mailBtn" href="mailto:hello@semicolon.example">메일로 보내기 <span class="arrow">↗</span></a>
+              <button type="button" class="btn btn-ghost" id="resetBtn">다시 작성하기</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 사이드 -->
+        <aside>
+          <div class="aside-card">
+            <h3>다른 방법으로 닿기</h3>
+            <div class="aside-row"><div class="k">이메일</div><a class="v" href="mailto:hello@semicolon.example">hello@semicolon.example</a></div>
+            <div class="aside-row"><div class="k">위치</div><div class="v">서울 어딘가, 대한민국</div></div>
+            <div class="aside-row"><div class="k">응답</div><div class="v">보통 2~3일 안에 회신</div></div>
+          </div>
+          <div class="aside-card">
+            <h3>제보 전에</h3>
+            <p class="aside-note">"이건 나만 불편한가?" 싶은 것일수록 환영합니다. 작아서 아무도 말하지 않은 불편이, 우리가 가장 먼저 끝맺고 싶은 문장이에요.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-top">
+        <div>
+          <a class="brand" href="index.html">
+            <svg class="logo" viewBox="0 0 28 46" aria-hidden="true">
+              <rect class="sc-dot" x="8" y="2" width="13" height="13" rx="2.5" />
+              <path class="sc-comma" d="M8 21 L21 21 C20 30 17 37 13.5 44 Q12 47 10.5 44 C9 37 8.5 30 8 21 Z" />
+            </svg>
+            세미콜론<span class="brand-en">Semicolon</span>
+          </a>
+          <p class="footer-tag">사회의 불편을 끝맺습니다. 누구나 쓰는 웹과 앱을 만드는 제품 스튜디오.</p>
+        </div>
+        <div class="footer-cols">
+          <div class="footer-col">
+            <h4>둘러보기</h4>
+            <a href="about.html">소개</a>
+            <a href="index.html#services">서비스</a>
+            <a href="contact.html">연락</a>
+          </div>
+          <div class="footer-col">
+            <h4>연락처</h4>
+            <a href="mailto:hello@semicolon.example">hello@semicolon.example</a>
+            <a href="#">서울 어딘가, 대한민국</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2025 세미콜론 (Semicolon). 연습용 가상 회사.</span>
+        <span>Made on GitHub Pages</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      "use strict";
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var nav = document.getElementById("nav");
+      function onScroll() { nav.classList.toggle("is-stuck", window.scrollY > 8); }
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+
+      var toggle = document.getElementById("navToggle");
+      var menu = document.getElementById("navMenu");
+      function setOpen(open) {
+        toggle.setAttribute("aria-expanded", open ? "true" : "false");
+        toggle.setAttribute("aria-label", open ? "메뉴 닫기" : "메뉴 열기");
+        menu.classList.toggle("open", open);
+      }
+      toggle.addEventListener("click", function () { setOpen(toggle.getAttribute("aria-expanded") !== "true"); });
+      menu.addEventListener("click", function (e) { if (e.target.closest("a")) setOpen(false); });
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape") setOpen(false); });
+      document.addEventListener("click", function (e) { if (!menu.contains(e.target) && !toggle.contains(e.target)) setOpen(false); });
+
+      /* 폼: 화면 동작 (전송은 미연결) */
+      var form = document.getElementById("reportForm");
+      var msg = document.getElementById("f-msg");
+      var fieldMsg = document.getElementById("field-msg");
+      var sent = document.getElementById("sent");
+      var mailBtn = document.getElementById("mailBtn");
+
+      msg.addEventListener("input", function () { fieldMsg.classList.remove("invalid"); });
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        if (!msg.value.trim()) {
+          fieldMsg.classList.add("invalid");
+          msg.focus();
+          return;
+        }
+        var area = document.getElementById("f-area").value;
+        var email = document.getElementById("f-email").value.trim();
+        var name = document.getElementById("f-name").value.trim();
+        var subject = "[세미콜론] 불편 제보" + (area ? " · " + area : "");
+        var body = [
+          "[어떤 불편인가요]",
+          msg.value.trim(),
+          "",
+          "— 보낸 사람: " + (name || "익명") + (email ? " (" + email + ")" : "")
+        ].join("\n");
+        mailBtn.setAttribute(
+          "href",
+          "mailto:hello@semicolon.example?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body)
+        );
+
+        form.hidden = true;
+        sent.hidden = false;
+        sent.focus();
+        sent.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
+      });
+
+      document.getElementById("resetBtn").addEventListener("click", function () {
+        form.reset();
+        fieldMsg.classList.remove("invalid");
+        sent.hidden = true;
+        form.hidden = false;
+        msg.focus();
+      });
+    })();
+  </script>
+</body>
+</html>

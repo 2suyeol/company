@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>소개 — 세미콜론</title>
+  <meta name="description" content="세미콜론은 사회의 불편을 끝맺는 제품 스튜디오입니다. 이름의 의미, 미션, 우리가 지키는 약속을 소개합니다." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" />
+  <link rel="stylesheet" href="styles.css?v=3" />
+
+  <style>
+    /* ===== about 전용 ===== */
+    .page-hero { padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(2rem, 5vw, 3.5rem); }
+    .page-hero h1 { font-size: clamp(2.1rem, 1.1rem + 4vw, 3.8rem); font-weight: 600; line-height: 1.12; letter-spacing: -0.03em; margin-top: 1.1rem; }
+    .page-hero h1 .semi { color: var(--green); font-weight: 700; font-size: 1.12em; }
+    .page-hero .lead { margin-top: 1.4rem; max-width: 46ch; color: var(--ink-soft); font-size: clamp(1.05rem, 1rem + 0.4vw, 1.2rem); }
+
+    /* 이름 이야기 */
+    .name-band { background: var(--mist); }
+    .name-grid { display: grid; gap: clamp(1.5rem, 4vw, 3rem); grid-template-columns: 1fr; align-items: center; }
+    @media (min-width: 820px) { .name-grid { grid-template-columns: 0.9fr 1.1fr; } }
+    .name-grid h2 { font-size: clamp(1.6rem, 1.1rem + 2vw, 2.4rem); font-weight: 600; letter-spacing: -0.02em; margin-top: 0.7rem; line-height: 1.2; }
+    .name-grid p { color: var(--ink-soft); margin-top: 1rem; max-width: 46ch; }
+    .clause {
+      background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius);
+      padding: clamp(1.75rem, 4vw, 2.75rem); display: flex; align-items: center; justify-content: center;
+      gap: clamp(0.75rem, 3vw, 1.75rem); flex-wrap: wrap; text-align: center;
+    }
+    .clause .part { font-size: clamp(1.05rem, 0.9rem + 1vw, 1.5rem); font-weight: 600; letter-spacing: -0.01em; }
+    .clause .part.before { color: var(--ink-soft); }
+    .clause .part.after { color: var(--ink); }
+    .clause .mark { font-size: clamp(2.6rem, 2rem + 4vw, 4.5rem); font-weight: 700; color: var(--green); line-height: 0.8; transform: translateY(0.08em); }
+
+    /* 미션 */
+    .mission { text-align: center; }
+    .mission .statement {
+      font-size: clamp(1.9rem, 1.2rem + 3.4vw, 3.4rem); font-weight: 600; letter-spacing: -0.025em;
+      line-height: 1.18; max-width: 18ch; margin: 1.2rem auto 0;
+    }
+    .mission .statement .semi { color: var(--green); font-weight: 700; }
+    .mission .lead { color: var(--ink-soft); max-width: 50ch; margin: 1.5rem auto 0; }
+
+    /* 약속 */
+    .commit-band { background: var(--paper-deep); }
+    .commit-list { display: grid; gap: 0; border-top: 1px solid var(--line); margin-top: 0.5rem; }
+    .commit-row { display: grid; grid-template-columns: 2.5rem 1fr; gap: clamp(1rem, 3vw, 2rem); padding-block: 1.6rem; border-bottom: 1px solid var(--line); align-items: baseline; }
+    .commit-row .ix { font-family: var(--mono); color: var(--green); font-weight: 500; font-size: 0.9rem; }
+    .commit-row h3 { font-size: 1.2rem; font-weight: 600; letter-spacing: -0.01em; }
+    .commit-row p { color: var(--ink-soft); margin-top: 0.35rem; max-width: 56ch; }
+    @media (min-width: 640px) { .commit-row { grid-template-columns: 2.5rem 16rem 1fr; } .commit-row p { margin-top: 0; } }
+
+    /* 팀 */
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.1rem; }
+    .member { background: var(--paper-deep); border: 1px solid var(--line-soft); border-radius: var(--radius); padding: 1.6rem; }
+    .avatar { width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: 1.3rem; color: #fff; background: var(--green); margin-bottom: 1rem; }
+    .member:nth-child(2) .avatar { background: var(--apricot); }
+    .member:nth-child(3) .avatar { background: var(--green-mid); }
+    .member h3 { font-size: 1.15rem; font-weight: 700; }
+    .member .role { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green); margin-top: 0.2rem; }
+    .member p { color: var(--ink-soft); margin-top: 0.7rem; font-size: 0.95rem; }
+
+    /* 연혁 */
+    .timeline { display: grid; gap: 0; border-left: 2px solid var(--green-tint); margin-left: 0.4rem; }
+    .tl-row { position: relative; padding: 0 0 1.6rem 1.75rem; }
+    .tl-row:last-child { padding-bottom: 0; }
+    .tl-row::before { content: ""; position: absolute; left: -7px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: var(--green); }
+    .tl-row .when { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.06em; color: var(--green); }
+    .tl-row .what { font-weight: 500; margin-top: 0.2rem; }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAV ===== -->
+  <header class="nav" id="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="index.html" aria-label="세미콜론 홈">
+        <svg class="logo" viewBox="0 0 28 46" aria-hidden="true">
+          <rect class="sc-dot" x="8" y="2" width="13" height="13" rx="2.5" />
+          <path class="sc-comma" d="M8 21 L21 21 C20 30 17 37 13.5 44 Q12 47 10.5 44 C9 37 8.5 30 8 21 Z" />
+        </svg>
+        세미콜론<span class="brand-en">Semicolon</span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="메뉴 열기">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav-links" id="navMenu" aria-label="주요 메뉴">
+        <a class="nav-link" href="about.html">소개</a>
+        <a class="nav-link" href="products.html">서비스</a>
+        <a class="nav-link" href="contact.html">연락</a>
+        <a class="btn btn-primary nav-cta" href="contact.html">불편 제보하기</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- ===== PAGE HERO ===== -->
+    <section class="page-hero">
+      <div class="wrap">
+        <span class="eyebrow">소개</span>
+        <h1>우리는 불편을<br />끝맺는 일을 합니다<span class="semi">;</span></h1>
+        <p class="lead">세미콜론은 일상 속 작은 불편을 모아, 누구나 편하게 쓰는 웹과 앱으로 끝맺는 제품 스튜디오입니다.</p>
+      </div>
+    </section>
+
+    <!-- ===== 이름 이야기 ===== -->
+    <section class="section name-band">
+      <div class="wrap name-grid reveal">
+        <div>
+          <span class="eyebrow">이름의 의미</span>
+          <h2>왜 '세미콜론'일까요?</h2>
+          <p>세미콜론(;)은 한 문장을 끝맺으면서, 곧바로 이어지는 다음 문장과 연결하는 문장 부호입니다. 우리는 불편했던 일상을 여기서 끝맺고, 더 나은 다음으로 잇고 싶었습니다.</p>
+        </div>
+        <div class="clause" aria-hidden="true">
+          <span class="part before">불편했던 일상</span>
+          <span class="mark">;</span>
+          <span class="part after">조금 더 편한 내일</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 미션 ===== -->
+    <section class="section">
+      <div class="wrap mission reveal">
+        <span class="eyebrow" style="justify-content:center; display:inline-flex;">우리의 미션</span>
+        <p class="statement">사회의 불편한 점을,<br />끝까지 끝맺는다<span class="semi">.</span></p>
+        <p class="lead">큰 혁신보다, 매일 부딪히는 작은 마찰 하나를 확실히 없애는 일을 더 중요하게 생각합니다. 작은 불편이 사라질 때 일상은 한 줄씩 편해집니다.</p>
+      </div>
+    </section>
+
+    <!-- ===== 약속 ===== -->
+    <section class="section commit-band">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="eyebrow">우리가 지키는 약속</span>
+          <h2>편함은 태도에서 나옵니다.</h2>
+        </div>
+        <div class="commit-list reveal">
+          <div class="commit-row"><span class="ix">01</span><h3>사용자를 탓하지 않습니다</h3><p>헤매는 건 사람이 아니라 화면입니다. 길을 못 찾으면 우리가 화면을 고칩니다.</p></div>
+          <div class="commit-row"><span class="ix">02</span><h3>단계를 늘리기 전에 지웁니다</h3><p>기능을 더하는 건 쉽습니다. 우리는 먼저 뺄 수 있는지를 묻습니다.</p></div>
+          <div class="commit-row"><span class="ix">03</span><h3>가장 약한 사용자에 맞춥니다</h3><p>가장 어려워하는 사람이 쓸 수 있다면, 모두가 편하게 씁니다.</p></div>
+          <div class="commit-row"><span class="ix">04</span><h3>끝맺을 때까지 다듬습니다</h3><p>"이 정도면 됐다"에서 멈추지 않습니다. 실제로 편해질 때까지 반복합니다.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 팀 ===== -->
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="eyebrow">함께 만드는 사람들</span>
+          <h2>불편을 제일 먼저 발견하는 사람들.</h2>
+          <p>아래 구성원은 연습용 가상 정보입니다.</p>
+        </div>
+        <div class="team-grid reveal">
+          <div class="member">
+            <div class="avatar">이</div>
+            <h3>이수열</h3>
+            <p class="role">Founder · 대표</p>
+            <p>불편을 가장 먼저 알아채고, 끝맺을 때까지 놓지 않는 사람.</p>
+          </div>
+          <div class="member">
+            <div class="avatar">도</div>
+            <h3>김도윤</h3>
+            <p class="role">Design · 디자인</p>
+            <p>설명이 필요 없는 화면을 만드는 사람. 군더더기를 가장 먼저 지웁니다.</p>
+          </div>
+          <div class="member">
+            <div class="avatar">서</div>
+            <h3>박서연</h3>
+            <p class="role">Engineering · 개발</p>
+            <p>가장 약한 환경에서도 끊기지 않게, 단단하게 잇는 사람.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 연혁 ===== -->
+    <section class="section" style="padding-top:0;">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="eyebrow">걸어온 길</span>
+          <h2>작은 불편을 모아온 시간.</h2>
+        </div>
+        <div class="timeline reveal">
+          <div class="tl-row"><div class="when">2024</div><div class="what">흩어진 작은 불편들을 기록하고 모으기 시작</div></div>
+          <div class="tl-row"><div class="when">2025 · 봄</div><div class="what">첫 서비스 '겨를' 공개</div></div>
+          <div class="tl-row"><div class="when">2025 · 여름</div><div class="what">'또박' · '여밈' 합류</div></div>
+          <div class="tl-row"><div class="when">지금</div><div class="what">다음에 끝맺을 불편을 기다리는 중</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section class="section" style="padding-top:0;">
+      <div class="cta-band">
+        <div class="cta-inner reveal">
+          <span class="eyebrow">함께 끝맺기</span>
+          <h2>당신의 불편도 듣고 싶어요<span class="semi">.</span></h2>
+          <p>사소해서 말 못 했던 불편일수록 좋습니다. 세미콜론이 그 문장을 함께 끝맺겠습니다.</p>
+          <a class="btn btn-primary" href="contact.html">불편 제보하기 <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-top">
+        <div>
+          <a class="brand" href="index.html">
+            <svg class="logo" viewBox="0 0 28 46" aria-hidden="true">
+              <rect class="sc-dot" x="8" y="2" width="13" height="13" rx="2.5" />
+              <path class="sc-comma" d="M8 21 L21 21 C20 30 17 37 13.5 44 Q12 47 10.5 44 C9 37 8.5 30 8 21 Z" />
+            </svg>
+            세미콜론<span class="brand-en">Semicolon</span>
+          </a>
+          <p class="footer-tag">사회의 불편을 끝맺습니다. 누구나 쓰는 웹과 앱을 만드는 제품 스튜디오.</p>
+        </div>
+        <div class="footer-cols">
+          <div class="footer-col">
+            <h4>둘러보기</h4>
+            <a href="about.html">소개</a>
+            <a href="products.html">서비스</a>
+            <a href="contact.html">연락</a>
+          </div>
+          <div class="footer-col">
+            <h4>연락처</h4>
+            <a href="mailto:hello@semicolon.example">hello@semicolon.example</a>
+            <a href="#">서울 어딘가, 대한민국</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2025 세미콜론 (Semicolon). 연습용 가상 회사.</span>
+        <span>Made on GitHub Pages</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      "use strict";
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var nav = document.getElementById("nav");
+      function onScroll() { nav.classList.toggle("is-stuck", window.scrollY > 8); }
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+
+      var els = document.querySelectorAll(".reveal");
+      if (reduce || !("IntersectionObserver" in window)) {
+        els.forEach(function (el) { el.classList.add("in"); });
+      } else {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+        }, { threshold: 0.16 });
+        els.forEach(function (el) { io.observe(el); });
+      }
+
+      var toggle = document.getElementById("navToggle");
+      var menu = document.getElementById("navMenu");
+      function setOpen(open) {
+        toggle.setAttribute("aria-expanded", open ? "true" : "false");
+        toggle.setAttribute("aria-label", open ? "메뉴 닫기" : "메뉴 열기");
+        menu.classList.toggle("open", open);
+      }
+      toggle.addEventListener("click", function () { setOpen(toggle.getAttribute("aria-expanded") !== "true"); });
+      menu.addEventListener("click", function (e) { if (e.target.closest("a")) setOpen(false); });
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape") setOpen(false); });
+      document.addEventListener("click", function (e) { if (!menu.contains(e.target) && !toggle.contains(e.target)) setOpen(false); });
+    })();
+  </script>
+</body>
+</html>

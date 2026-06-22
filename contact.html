@@ -40,8 +40,16 @@
     .field .err { color: #b4452f; font-size: 0.85rem; margin-top: 0.4rem; display: none; }
     .field.invalid .err { display: block; }
     .field.invalid input, .field.invalid textarea { border-color: #b4452f; }
+
+    /* 스팸 방지 허니팟 (사용자에게 숨김) */
+    .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
     .form-actions { margin-top: 1.5rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
     .form-note { font-size: 0.82rem; color: var(--ink-soft); }
+    .btn[disabled] { opacity: 0.6; cursor: progress; transform: none !important; }
+    .form-fail { margin-top: 1rem; font-size: 0.9rem; color: #b4452f; display: none; }
+    .form-fail.show { display: block; }
+    .form-fail a { color: var(--green); font-weight: 600; text-decoration: underline; }
 
     /* 전송 후 안내 */
     .sent { background: var(--paper-deep); border: 1px solid var(--green-tint); border-radius: var(--radius); padding: clamp(1.75rem, 4vw, 2.75rem); }
@@ -128,19 +136,22 @@
               <input type="text" id="f-name" placeholder="익명도 괜찮아요" autocomplete="name" />
             </div>
 
+            <!-- 허니팟: 사람에겐 안 보이고 봇만 채움 -->
+            <input class="hp" type="text" id="f-honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
             <div class="form-actions">
-              <button type="submit" class="btn btn-primary">불편 보내기 <span class="arrow">→</span></button>
-              <span class="form-note">지금은 화면만 동작합니다. 실제 전송 기능은 곧 연결돼요.</span>
+              <button type="submit" class="btn btn-primary" id="submitBtn">불편 보내기 <span class="arrow">→</span></button>
+              <span class="form-note">보내주시면 2suyeol@gmail.com 으로 전달됩니다.</span>
             </div>
+            <p class="form-fail" id="formFail"></p>
           </form>
 
-          <!-- 전송 후(현재는 안내) -->
+          <!-- 전송 완료 -->
           <div class="sent" id="sent" hidden tabindex="-1" aria-live="polite">
-            <h2>잘 받았습니다<span class="semi">;</span> 다만 아직 한 단계 남았어요.</h2>
-            <p>이 페이지는 화면만 준비된 단계라, 작성하신 내용은 아직 자동 전송되지 않습니다. 아래 버튼을 누르면 적으신 내용이 그대로 담긴 메일이 열려요. (자동 접수 기능은 곧 연결됩니다.)</p>
+            <h2>고맙습니다<span class="semi">;</span> 잘 보냈어요.</h2>
+            <p>보내주신 불편을 확인하고, 회신받을 이메일을 적어주셨다면 필요할 때 답장드릴게요.</p>
             <div class="sent-actions">
-              <a class="btn btn-primary" id="mailBtn" href="mailto:hello@semicolon.example">메일로 보내기 <span class="arrow">↗</span></a>
-              <button type="button" class="btn btn-ghost" id="resetBtn">다시 작성하기</button>
+              <button type="button" class="btn btn-ghost" id="resetBtn">또 다른 불편 보내기</button>
             </div>
           </div>
         </div>
@@ -149,8 +160,8 @@
         <aside>
           <div class="aside-card">
             <h3>다른 방법으로 닿기</h3>
-            <div class="aside-row"><div class="k">이메일</div><a class="v" href="mailto:hello@semicolon.example">hello@semicolon.example</a></div>
-            <div class="aside-row"><div class="k">위치</div><div class="v">서울 어딘가, 대한민국</div></div>
+            <div class="aside-row"><div class="k">이메일</div><a class="v" href="mailto:2suyeol@gmail.com">2suyeol@gmail.com</a></div>
+            <div class="aside-row"><div class="k">위치</div><div class="v">대한민국, 어딘가</div></div>
             <div class="aside-row"><div class="k">응답</div><div class="v">보통 2~3일 안에 회신</div></div>
           </div>
           <div class="aside-card">
@@ -185,14 +196,14 @@
           </div>
           <div class="footer-col">
             <h4>연락처</h4>
-            <a href="mailto:hello@semicolon.example">hello@semicolon.example</a>
-            <a href="#">서울 어딘가, 대한민국</a>
+            <a href="mailto:2suyeol@gmail.com">2suyeol@gmail.com</a>
+            <a href="#">대한민국, 어딘가</a>
           </div>
         </div>
       </div>
       <div class="footer-bottom">
-        <span>© 2025 세미콜론 (Semicolon). 연습용 가상 회사.</span>
-        <span>Made on GitHub Pages</span>
+        <span>© 2025 세미콜론 (Semicolon). 미술 창업 수행용 회사.</span>
+        <span>Made by SUYEOL LEE</span>
       </div>
     </div>
   </footer>
@@ -218,46 +229,91 @@
       document.addEventListener("keydown", function (e) { if (e.key === "Escape") setOpen(false); });
       document.addEventListener("click", function (e) { if (!menu.contains(e.target) && !toggle.contains(e.target)) setOpen(false); });
 
-      /* 폼: 화면 동작 (전송은 미연결) */
+      /* ===== 불편 제보 폼: 실제 전송 (FormSubmit) ===== */
+      var ENDPOINT = "https://formsubmit.co/ajax/2suyeol@gmail.com";
+
       var form = document.getElementById("reportForm");
       var msg = document.getElementById("f-msg");
       var fieldMsg = document.getElementById("field-msg");
       var sent = document.getElementById("sent");
-      var mailBtn = document.getElementById("mailBtn");
+      var btn = document.getElementById("submitBtn");
+      var fail = document.getElementById("formFail");
+      var honey = document.getElementById("f-honey");
+      var btnHTML = btn.innerHTML;
 
       msg.addEventListener("input", function () { fieldMsg.classList.remove("invalid"); });
 
+      function setLoading(on) {
+        btn.disabled = on;
+        btn.innerHTML = on ? "보내는 중…" : btnHTML;
+      }
+
+      function mailtoFallback() {
+        var area = document.getElementById("f-area").value;
+        var email = document.getElementById("f-email").value.trim();
+        var name = document.getElementById("f-name").value.trim();
+        var subject = "[세미콜론] 불편 제보" + (area ? " · " + area : "");
+        var body = ["[어떤 불편인가요]", msg.value.trim(), "", "— 보낸 사람: " + (name || "익명") + (email ? " (" + email + ")" : "")].join("\n");
+        return "mailto:2suyeol@gmail.com?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+      }
+
+      function showSent() {
+        form.hidden = true;
+        sent.hidden = false;
+        sent.focus();
+        sent.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
+      }
+
+      function showFail() {
+        setLoading(false);
+        fail.innerHTML = '전송에 실패했어요. 잠시 후 다시 시도하거나, <a href="' + mailtoFallback() + '">메일로 바로 보내기</a>를 이용해 주세요.';
+        fail.classList.add("show");
+      }
+
       form.addEventListener("submit", function (e) {
         e.preventDefault();
+        fail.classList.remove("show");
+
         if (!msg.value.trim()) {
           fieldMsg.classList.add("invalid");
           msg.focus();
           return;
         }
-        var area = document.getElementById("f-area").value;
-        var email = document.getElementById("f-email").value.trim();
-        var name = document.getElementById("f-name").value.trim();
-        var subject = "[세미콜론] 불편 제보" + (area ? " · " + area : "");
-        var body = [
-          "[어떤 불편인가요]",
-          msg.value.trim(),
-          "",
-          "— 보낸 사람: " + (name || "익명") + (email ? " (" + email + ")" : "")
-        ].join("\n");
-        mailBtn.setAttribute(
-          "href",
-          "mailto:hello@semicolon.example?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body)
-        );
+        // 허니팟이 채워졌으면 봇으로 보고 조용히 완료 처리
+        if (honey.value) { showSent(); return; }
 
-        form.hidden = true;
-        sent.hidden = false;
-        sent.focus();
-        sent.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
+        if (!window.fetch) { window.location.href = mailtoFallback(); return; }
+
+        var payload = {
+          "영역": document.getElementById("f-area").value || "고르지 않음",
+          "불편 내용": msg.value.trim(),
+          "회신 이메일": document.getElementById("f-email").value.trim() || "(미입력)",
+          "이름": document.getElementById("f-name").value.trim() || "익명",
+          "_subject": "[세미콜론] 불편 제보",
+          "_template": "table",
+          "_captcha": "false"
+        };
+
+        setLoading(true);
+        fetch(ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify(payload)
+        })
+          .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { return { ok: r.ok, data: d }; }); })
+          .then(function (res) {
+            var d = res.data || {};
+            var success = res.ok && (d.success === true || d.success === "true" || typeof d.success === "undefined");
+            if (success) { showSent(); } else { showFail(); }
+          })
+          .catch(function () { showFail(); });
       });
 
       document.getElementById("resetBtn").addEventListener("click", function () {
         form.reset();
         fieldMsg.classList.remove("invalid");
+        fail.classList.remove("show");
+        setLoading(false);
         sent.hidden = true;
         form.hidden = false;
         msg.focus();

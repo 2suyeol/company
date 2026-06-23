@@ -54,7 +54,7 @@
     @media (min-width: 640px) { .commit-row { grid-template-columns: 2.5rem 16rem 1fr; } .commit-row p { margin-top: 0; } }
 
     /* 팀 */
-    .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.1rem; }
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 360px)); justify-content: start; gap: 1.1rem; }
     .member { background: var(--paper-deep); border: 1px solid var(--line-soft); border-radius: var(--radius); padding: 1.6rem; }
     .avatar { width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: 1.3rem; color: #fff; background: var(--green); margin-bottom: 1rem; }
     .member:nth-child(2) .avatar { background: var(--apricot); }
@@ -151,28 +151,15 @@
     <section class="section">
       <div class="wrap">
         <div class="section-head reveal">
-          <span class="eyebrow">함께 만드는 사람들</span>
-          <h2>불편을 제일 먼저 발견하는 사람들.</h2>
-          <p>대표(이수열)를 제외한 구성원은 가상 정보입니다.</p>
+          <span class="eyebrow">만드는 사람</span>
+          <h2>불편을 제일 먼저 발견하는 사람.</h2>
         </div>
         <div class="team-grid reveal">
           <div class="member">
             <div class="avatar">이</div>
             <h3>이수열</h3>
             <p class="role">Founder · 대표</p>
-            <p>불편을 가장 먼저 알아채고, 끝맺을 때까지 놓지 않는 사람.</p>
-          </div>
-          <div class="member">
-            <div class="avatar">도</div>
-            <h3>김도윤</h3>
-            <p class="role">Design · 디자인</p>
-            <p>설명이 필요 없는 화면을 만드는 사람. 군더더기를 가장 먼저 지웁니다.</p>
-          </div>
-          <div class="member">
-            <div class="avatar">서</div>
-            <h3>박서연</h3>
-            <p class="role">Engineering · 개발</p>
-            <p>가장 약한 환경에서도 끊기지 않게, 단단하게 잇는 사람.</p>
+            <p>불편을 가장 먼저 알아채고, 끝맺을 때까지 놓지 않는 사람. 세미콜론의 모든 서비스를 직접 만듭니다.</p>
           </div>
         </div>
       </div>
